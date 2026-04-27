@@ -1,0 +1,147 @@
+@use '../../styles/variables' as vars;
+
+// Dois cartões 634×350; o bloco base respeita o Figma. Em 700px quebramos coluna.
+$apoio-radius: 20px;
+$apoio-yellow: #f7ca11;
+$apoio-cta-text: #271c47;
+.support-banner {
+  width: 100%;
+  padding: 2.5rem 0 2.5rem;
+  background: vars.$color-white;
+
+  &__inner.container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
+
+  // Figma: row, gap 13px, 1281×350 (dois 634×350)
+  &__row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: center;
+    gap: 13px;
+    max-width: 1281px;
+    margin: 0 auto;
+  }
+
+  &__card {
+    position: relative;
+    flex: 1 1 0;
+    min-width: min(100%, 280px);
+    max-width: 634px;
+    height: 350px;
+    overflow: hidden;
+    border-radius: $apoio-radius;
+    background: #c4c4c4;
+    box-sizing: border-box;
+  }
+
+  // Imagem (01-.jpg / image 45 no projeto) com área ampliada como no Figma
+  &__media {
+    position: absolute;
+    inset: 0;
+    background-color: #c4c4c4;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 60% 45%;
+  }
+
+  // Rectangle 107: gradiente a partir de ~89px, cantos inferiores 20px
+  &__overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 89px;
+    bottom: 0;
+    border-radius: 0 0 $apoio-radius $apoio-radius;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 85.04%);
+    mix-blend-mode: normal;
+    opacity: 0.8;
+    pointer-events: none;
+  }
+
+  // Textos: left ~44px; título 114, texto 182, CTA 262 (absolutos no frame)
+  &__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 114px 2.75rem 2.5rem 2.75rem; // esquerda 44.18px
+  }
+
+  &__title {
+    margin: 0 0 0.5rem;
+    max-width: 220px;
+    font-family: vars.$font-main;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 60px;
+    color: #fff;
+  }
+
+  &__text {
+    max-width: 200px;
+    margin: 0 0 2rem;
+    font-family: vars.$font-main;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #fff;
+  }
+
+  // Group 663: 144,69×48, raio 6, amarelo
+  &__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 91px;
+    min-height: 24px;
+    padding: 12px 1.5rem;
+    box-sizing: border-box;
+    border-radius: 6px;
+    background: $apoio-yellow;
+    font-family: vars.$font-main;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: $apoio-cta-text;
+    text-decoration: none;
+    transition: filter 0.2s ease;
+
+    &:hover {
+      filter: brightness(1.05);
+    }
+  }
+}
+
+@media (max-width: 700px) {
+  .support-banner {
+    &__row {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    &__card {
+      max-width: 100%;
+      width: 100%;
+    }
+
+    &__title {
+      font-size: clamp(1.75rem, 6vw, 2.5rem);
+      line-height: 1.2;
+    }
+  }
+}

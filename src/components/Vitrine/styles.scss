@@ -1,0 +1,478 @@
+@use '../../styles/variables' as vars;
+
+// Abas + vitrine: no desktop largo, o track desliza e mostra 4 itens (layout Figma); preços vêm do JSON em reais inteiros.
+$vitrine-blue: #3442b5;
+$vitrine-line: #dedede;
+$vitrine-border-tab: #bdbdbd;
+$vitrine-text-tab: #3b3b3b;
+$vitrine-strike: #808080;
+
+.vitrine {
+  width: 100%;
+  padding: 2.5rem 0 3rem;
+  background: vars.$color-white;
+
+  &__inner.container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
+
+  &__intro {
+    margin-bottom: 1.75rem;
+  }
+
+  &__heading {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem 1rem;
+    margin: 0 0 0.5rem;
+  }
+
+  &__rule {
+    flex: 1 1 0;
+    min-width: 2rem;
+    max-width: 360px;
+    height: 0;
+    border: 0;
+    border-top: 1px solid $vitrine-line;
+  }
+
+  &__title {
+    margin: 0;
+    flex: 0 0 auto;
+    max-width: 100%;
+    font-family: vars.$font-main;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 45px;
+    text-align: center;
+    color: $vitrine-blue;
+  }
+
+  // "Ver todos" (link 15px / 700 / #3F3F40)
+  &__link-all {
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    margin: 0 auto 1.25rem;
+    font-family: vars.$font-main;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 22px;
+    text-align: center;
+    color: vars.$color-text-dark;
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $vitrine-blue;
+    }
+  }
+
+  // Fila de abas (Figma: partilham bordas; em ecrã muito estreito ver regra abaixo no @media 768)
+  &__tabs {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+    width: 100%;
+    min-height: 40px;
+  }
+
+  &__tab {
+    box-sizing: border-box;
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 12px;
+    margin: 0 0 0 -1px;
+    border: 1px solid $vitrine-border-tab;
+    background: #fff;
+    font-family: vars.$font-main;
+    font-size: 16px;
+    line-height: 16px;
+    text-transform: uppercase;
+    color: $vitrine-text-tab;
+    font-weight: 400;
+    cursor: pointer;
+    transition:
+      color 0.2s ease,
+      font-weight 0.2s ease;
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &--active {
+      color: $vitrine-blue;
+      font-weight: 700;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $vitrine-blue;
+      outline-offset: 2px;
+      z-index: 1;
+    }
+  }
+
+  // Setas nas laterais (Figma: space-between), alinhadas ao meio vertical da vitrine
+  &__slider {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+
+  // Viewport do carrossel: 100% da coluna central, overflow escondido; o trilho desliza por `transform` (não a lista em si)
+  &__row-wrap {
+    display: flex;
+    flex: 1 1 auto;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    margin: 0 min(0.5rem, 1vw);
+    overflow: hidden;
+  }
+
+  // Trilho: largura = wrapper; a animação aplica-se aqui (0.5s ease)
+  &__row-track {
+    width: 100%;
+    min-width: 0;
+    transition: transform 0.5s ease;
+    will-change: transform;
+  }
+
+  &__row {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    min-width: 0;
+    box-sizing: border-box;
+    gap: 18px;
+  }
+
+  // Pista = (n/4)·100% do trilho: abre exactamente o espaço de n/4 “páginas” de 4 itens; cada .vitrine__card fica 1/4 do wrapper (quatro visíveis)
+  & &__row[data-carousel='on'] {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+  }
+
+  // Largura fixa por coluna: com a pista a (n/4)·100%, cada li é 1/n disto (= 1/4 do .vitrine__row-wrap); fórmula inclui o gap 18px entre n itens
+  & &__row[data-carousel='on'] .vitrine__card {
+    flex: 0 0
+      calc((100% - 18px * (var(--vitrine-n) - 1)) / var(--vitrine-n, 1));
+    min-width: 0;
+  }
+
+  // Sem carrossel (ou ≤4 produtos, ou ecrã estreito): grelha reaproveitada
+  & &__row[data-carousel='off'] {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  &__card {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  // Conteúdo semântico do item da lista (article > button)
+  &__card-article {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  // Superfície única (button) abre o modal: evita botão dentro de botão
+  &__card-surface {
+    display: flex;
+    flex-direction: column;
+    min-height: 500px;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px 12px 12px;
+    background: #fff;
+    box-shadow: 0 3px 19px rgba(0, 0, 0, 0.22);
+    border-radius: 10px;
+    border: none;
+    margin: 0;
+    font: inherit;
+    text-align: left;
+    color: inherit;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    font-family: inherit;
+
+    &:focus-visible {
+      outline: 2px solid $vitrine-blue;
+      outline-offset: 2px;
+    }
+
+    &:hover {
+      box-shadow: 0 4px 22px rgba(0, 0, 0, 0.25);
+    }
+  }
+
+  &__card-image-wrap {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 240px;
+    margin-bottom: 0.5rem;
+  }
+
+  &__card-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  // Nome do produto: destaque (h3)
+  &__card-title {
+    margin: 0 0 0.35rem;
+    font-family: vars.$font-main;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 22px;
+    color: vars.$color-text-dark;
+  }
+
+  // Descrição curta: hierarquia secundária, 2 linhas com reticências
+  &__card-desc {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0 0 0.5rem;
+    font-family: vars.$font-main;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 1.35;
+    color: #3f3f40;
+  }
+
+  &__price-old {
+    font-family: vars.$font-main;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    text-decoration: line-through;
+    color: $vitrine-strike;
+  }
+
+  // Preço no cartão: logo abaixo da descrição, em destaque (reais inteiros; sem /100)
+  &__card-price {
+    margin: 0 0 0.4rem;
+    font-family: vars.$font-main;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 1.3;
+    color: vars.$color-text-dark;
+  }
+
+  &__installment {
+    margin: 0 0 0.15rem;
+    font-family: vars.$font-main;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    color: vars.$color-text-dark;
+  }
+
+  &__shipping {
+    margin: 0 0 0.75rem;
+    font-family: vars.$font-main;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    color: $vitrine-blue;
+  }
+
+  &__buy {
+    display: block;
+    margin-top: auto;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    background: $vitrine-blue;
+    font-family: vars.$font-main;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 21px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #fff;
+    cursor: pointer;
+    transition: filter 0.2s ease;
+    pointer-events: none;
+  }
+
+  &__card-surface:hover .vitrine__buy {
+    filter: brightness(1.05);
+  }
+
+  // Group 2411 / 2412 — 32px, laterais da vitrine (Figma: space-between no eixo horizontal)
+  &__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 32px;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    line-height: 0;
+    align-self: center;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      opacity: 0.88;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $vitrine-blue;
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  }
+
+  &__arrow-icon {
+    display: block;
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+  }
+
+  &__status {
+    width: 100%;
+    margin: 0;
+    padding: 2rem 1rem;
+    text-align: center;
+    font-family: vars.$font-main;
+    font-size: 15px;
+    line-height: 1.4;
+    color: vars.$color-text-dark;
+  }
+}
+
+@media (max-width: vars.$bp-laptop) {
+  .vitrine {
+    &__row-wrap {
+      margin: 0;
+      overflow: visible;
+    }
+
+    &__row[data-carousel='off'] {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    &__card-surface {
+      min-height: 0;
+    }
+
+    &__arrow {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: vars.$bp-mobile) {
+  .vitrine {
+    &__row[data-carousel='off'] {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+@media (max-width: 700px) {
+  .vitrine {
+    &__title {
+      font-size: 1.5rem;
+      line-height: 1.3;
+    }
+  }
+}
+
+// Permite percorrer as abas com swipe no telemóvel (uma linha rolável) sem partir o título nem o "Ver todos"
+@media (max-width: 768px) {
+  .vitrine {
+    &__tabs {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      width: calc(100% + 40px);
+      max-width: none;
+      min-height: 40px;
+      margin-left: -20px;
+      margin-right: -20px;
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+      box-sizing: border-box;
+      overflow-x: auto;
+      overflow-y: hidden;
+      gap: 0.5rem;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+
+      &::-webkit-scrollbar {
+        display: none;
+        width: 0;
+        height: 0;
+        background: transparent;
+      }
+    }
+
+    &__tab {
+      flex: 0 0 auto;
+      min-width: max-content;
+      margin: 0;
+      white-space: nowrap;
+      font-size: 12px;
+      line-height: 1.2;
+      padding: 10px 0.75rem;
+    }
+  }
+}

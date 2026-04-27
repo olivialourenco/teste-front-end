@@ -1,0 +1,183 @@
+@use '../../styles/variables' as vars;
+
+// Bloco 1440×390: posições absolutas do Figma. Só o bloco @media 900 desfaz o absoluto em telemóvel.
+$banner-height: 390px;
+$figma-artboard-top: 144px;
+$abs-top-title: 222;
+$abs-top-sub: 340;
+$abs-top-btn: 429;
+
+$top-title: $abs-top-title - $figma-artboard-top; // 78px
+$top-sub: $abs-top-sub - $figma-artboard-top; // 196px
+$top-btn: $abs-top-btn - $figma-artboard-top; // 285px
+
+.banner {
+  position: relative;
+  width: 100%;
+  height: $banner-height;
+  min-height: $banner-height;
+  max-width: 100%;
+  background-color: #1a1a1a;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+
+  // Rectangle 108: no Figma 390×966 com rotate(90°); o preenchimento é linear-gradient 180° + opacity 0.8 + mix-blend normal (border-radius 0).
+  // Em tela cheia, o mesmo efeito é aplicado em toda a área (1440+), pois a rotação do frame não escala a largura do banner.
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 85.04%);
+    mix-blend-mode: normal;
+    opacity: 0.8;
+    border-radius: 0;
+    pointer-events: none;
+  }
+
+  .container.banner__artboard {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1440px;
+    height: 100%;
+    min-height: $banner-height;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+
+  &__title {
+    position: absolute;
+    left: 81px;
+    top: $top-title;
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    max-width: 822px;
+    margin: 0;
+    font-family: vars.$font-main;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 48px;
+    line-height: 50px;
+    letter-spacing: 0;
+    color: #ffffff;
+  }
+
+  &__subtitle {
+    position: absolute;
+    left: 78px;
+    top: $top-sub;
+    width: 343px;
+    max-width: min(343px, calc(100% - 78px - 1.5rem));
+    font-family: vars.$font-main;
+    font-style: normal;
+    font-size: 32px;
+    line-height: 100%;
+    letter-spacing: 0;
+
+    &-discount {
+      color: #f7ca11;
+      font-weight: 700;
+      font-size: 32px;
+      line-height: 100%;
+      letter-spacing: 0;
+    }
+
+    &-regular {
+      color: #ffffff;
+      font-weight: 400;
+      font-size: 32px;
+      line-height: 100%;
+      letter-spacing: 0;
+    }
+  }
+
+  &__cta {
+    // Frame 23198: flex row, center, padding 7px 49px, gap 10
+    position: absolute;
+    left: 87px;
+    top: $top-btn;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 206px;
+    height: 50px;
+    padding: 7px 49px;
+    gap: 10px;
+    border: none;
+    border-radius: 5px;
+    background: #f7ca11;
+    font-family: vars.$font-main;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    color: #271c47;
+    flex: none;
+    cursor: pointer;
+    transition: filter 0.2s ease;
+
+    &:hover {
+      filter: brightness(1.05);
+    }
+
+    &:active {
+      filter: brightness(0.98);
+    }
+  }
+}
+
+// Layout fluido: remove posicionamento absoluto do Figma
+@media (max-width: 900px) {
+  .banner {
+    height: auto;
+    min-height: $banner-height;
+    background-position: right center;
+
+    .container.banner__artboard {
+      min-height: 0;
+      padding: 1.5rem 1.25rem 2rem;
+    }
+
+    &__overlay {
+      left: 0;
+      width: 100%;
+      height: 100%;
+      margin-left: 0;
+      transform: none;
+      transform-origin: initial;
+    }
+
+    &__title,
+    &__subtitle,
+    &__cta {
+      position: relative;
+      left: auto;
+      top: auto;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    &__title {
+      font-size: clamp(1.5rem, 2.5rem, 3rem);
+      line-height: 1.08;
+      margin-bottom: 0.5rem;
+    }
+
+    &__subtitle {
+      line-height: 1.2;
+      font-size: clamp(1.15rem, 1.4rem, 2rem);
+      margin-bottom: 1.25rem;
+    }
+
+    &__cta {
+      width: 100%;
+      max-width: 240px;
+      height: 50px;
+    }
+  }
+}

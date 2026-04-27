@@ -1,0 +1,23 @@
+@use './variables' as vars;
+
+// Reset leve + Poppins global; detalhes de cor vêm por secção
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: vars.$font-main;
+}
+
+body {
+  background-color: vars.$color-white;
+  color: vars.$color-text-dark;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}

@@ -1,0 +1,209 @@
+@use '../../styles/variables' as vars;
+
+// Cabeçalho em 3 faixas (topo institucional, busca+logo, menu). O bloco base replica o Figma 1440.
+.header {
+  width: 100%;
+  background-color: vars.$color-white;
+  display: flex;
+  flex-direction: column;
+
+  &__top-bar {
+    width: 100%;
+    border-bottom: 1px solid vars.$color-gray-line;
+    padding: 6px 0;
+    display: flex;
+    justify-content: center;
+
+    .container-top {
+      /* Frame 2364 */
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 119px;
+      width: 764px;
+      height: 20px;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: none;
+      
+      p {
+        font-family: vars.$font-main;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 18px;
+        color: vars.$color-gray-1;
+        white-space: nowrap;
+
+        span {
+          color: vars.$color-blue-active;
+          font-weight: 600;
+        }
+      }
+      img { width: 20px; height: 20px; }
+    }
+  }
+
+  // 2. HEADER PRINCIPAL (Centralizado com a Logo)
+  &__main {
+    padding: 15px 0;
+    
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
+
+    .logo {
+      width: 139px;
+      height: 41.3px;
+    }
+
+    .search-bar {
+      background: vars.$color-bg-search;
+      border-radius: 10px;
+      width: 440px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+
+      input {
+        background: transparent;
+        border: none;
+        flex: 1;
+        font-size: 14px;
+        outline: none;
+        color: vars.$color-gray-1;
+      }
+      button { background: transparent; border: none; cursor: pointer; }
+    }
+
+    .actions {
+      display: flex;
+      gap: 32px;
+      img { width: 32px; height: 32px; cursor: pointer; }
+    }
+  }
+
+  // 3. NAVEGAÇÃO (Rectangle 1)
+  &__nav {
+    /* Rectangle 1 */
+    width: 100%;
+    background: #FFFFFF;
+    box-shadow: 0px 8px 16px rgba(57, 48, 19, 0.12);
+    border-radius: 0px;
+    z-index: 10;
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+    }
+
+    ul {
+      display: flex;
+      gap: 91px;
+      padding: 12px 0;
+
+      li {
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: vars.$color-gray-1;
+        cursor: pointer;
+
+        &.active { color: vars.$color-blue-active; }
+        &:hover { color: vars.$color-blue-active; }
+      }
+    }
+  }
+}
+
+// A partir daqui: empilhamento, larguras percentuais e grelha de links — sem mudar o que está acima em ecrãs largos
+@media (max-width: vars.$bp-laptop) {
+  .header {
+    &__top-bar .container-top {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      min-height: 0;
+      gap: clamp(24px, 6vw, 80px);
+      padding: 0 1rem;
+      box-sizing: border-box;
+    }
+
+    &__main .search-bar {
+      max-width: min(440px, 100%);
+    }
+  }
+}
+
+@media (max-width: vars.$bp-tablet) {
+  .header {
+    &__top-bar .container-top {
+      flex-wrap: wrap;
+      justify-content: center;
+      row-gap: 0.5rem;
+    }
+
+    &__main {
+      .container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .search-bar {
+        order: 2;
+        width: 100%;
+      }
+
+      .actions {
+        order: 3;
+      }
+    }
+
+    &__nav {
+      .container {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0 0.5rem;
+      }
+
+      ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem 1.25rem;
+        padding: 0.6rem 0 0.75rem;
+      }
+    }
+  }
+}
+
+@media (max-width: vars.$bp-mobile) {
+  .header {
+    &__top-bar .container-top {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 0 0.75rem;
+    }
+
+    &__main {
+      padding: 12px 0;
+
+      .container {
+        padding: 0 0.75rem;
+      }
+    }
+  }
+}

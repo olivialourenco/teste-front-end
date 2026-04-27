@@ -1,0 +1,134 @@
+@use '../../styles/variables' as vars;
+
+// Modal de detalhe (dados do produto; portal no body, partilhado pelas três vitrines)
+$vm-blue: #3442b5;
+$vm-close: #707070;
+
+.vitrine-modal-root {
+  position: fixed;
+  inset: 0;
+  z-index: 2100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.vitrine-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  pointer-events: auto;
+  cursor: default;
+}
+
+.vitrine-modal {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 520px;
+  max-height: min(90vh, 640px);
+  overflow: auto;
+  box-sizing: border-box;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28);
+  padding: 1.5rem 1.25rem 1.25rem;
+  pointer-events: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.vitrine-modal__close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  line-height: 0;
+  border-radius: 4px;
+
+  &:focus-visible {
+    outline: 2px solid $vm-blue;
+    outline-offset: 2px;
+  }
+}
+
+.vitrine-modal__close-line {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: block;
+  width: 1.2rem;
+  height: 2px;
+  background: $vm-close;
+  border-radius: 1px;
+  transform-origin: center;
+
+  &:first-child {
+    transform: translate(-50%, -50%) rotate(41deg);
+  }
+
+  &:last-child {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+}
+
+.vitrine-modal__image-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 200px;
+  max-height: 320px;
+  margin: 0 0 1rem;
+}
+
+.vitrine-modal__image {
+  max-width: 100%;
+  max-height: 300px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.vitrine-modal__title {
+  margin: 0 0 0.5rem;
+  font-family: vars.$font-main;
+  font-weight: 600;
+  font-size: 1.1rem;
+  line-height: 1.35;
+  color: vars.$color-text-dark;
+}
+
+.vitrine-modal__price {
+  margin: 0 0 1rem;
+  font-family: vars.$font-main;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: vars.$color-text-dark;
+}
+
+.vitrine-modal__desc {
+  margin: 0;
+  font-family: vars.$font-main;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.5;
+  color: vars.$color-text-dark;
+}
+
+@media (max-width: vars.$bp-mobile) {
+  .vitrine-modal {
+    max-width: 100%;
+    max-height: 85vh;
+    padding: 1.25rem 1rem 1rem;
+  }
+}

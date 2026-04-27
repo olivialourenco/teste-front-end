@@ -1,0 +1,111 @@
+@use '../../styles/variables' as vars;
+
+$navegue-blue: #3442b5;
+$navegue-shadow: 0 7px 20px rgba(0, 0, 0, 0.13);
+$circle: 211px;
+$logo-max-w: 117px;
+$logo-max-h: 35px;
+
+// 5 círculos 211px; 1200 / 600 reduzem gap e, no telemóvel, tamanho do círculo
+.navegue-marcas {
+  width: 100%;
+  padding: 2.5rem 0 2.5rem;
+  background: vars.$color-white;
+
+  &__inner.container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
+
+  &__title {
+    margin: 0 auto 2rem;
+    width: 100%;
+    max-width: 1250px;
+    min-height: 45px; // Figma: título 1250×45
+    font-family: vars.$font-main;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 45px;
+    text-align: center;
+    color: $navegue-blue;
+  }
+
+  &__row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 42px;
+    max-width: 1223px;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+    min-height: 0;
+  }
+
+  &__cell {
+    flex: 0 0 auto;
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: $circle;
+    height: $circle;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: $navegue-shadow;
+    text-decoration: none;
+    line-height: 0;
+    transition:
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+    }
+
+    &:focus-visible {
+      outline: 2px solid $navegue-blue;
+      outline-offset: 3px;
+    }
+  }
+
+  &__logo {
+    display: block;
+    max-width: $logo-max-w;
+    max-height: $logo-max-h;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+}
+
+@media (max-width: 1200px) {
+  .navegue-marcas__row {
+    gap: 32px 24px;
+  }
+}
+
+// Ecrã estreito: título e círculos ligeiramente menores; desktop não mexe
+@media (max-width: 600px) {
+  .navegue-marcas {
+    &__title {
+      font-size: 1.4rem;
+      line-height: 1.3;
+    }
+
+    &__item {
+      width: 180px;
+      height: 180px;
+    }
+  }
+}
