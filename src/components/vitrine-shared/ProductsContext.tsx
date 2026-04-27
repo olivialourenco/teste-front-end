@@ -21,9 +21,8 @@ type Ctx = {
 
 const VitrineProductsContext = createContext<Ctx | null>(null);
 
-/**
- * Uma única carga de dados para toda a Home: proxy + API e, se falhar, o mock local
- * (o mesmo mecanismo da Vitrine 1).
+/** * Gerencia o carregamento inicial dos produtos: prioriza a API via proxy 
+ * e utiliza o fallback local como garantia de disponibilidade.
  */
 export const VitrineProductsProvider: FC<{ children: ReactNode }> = ({
   children,
@@ -48,19 +47,19 @@ export const VitrineProductsProvider: FC<{ children: ReactNode }> = ({
           list = extractProducts(data);
         }
       } catch {
-        /* proxy, CORS, rede, timeout (Abort) → tenta mock */
+        // Rede, CORS, proxy ou timeout no passo seguinte é feito o fallback
       } finally {
         clearTimeout(slowTimer);
       }
 
       if (cancelled) return;
-
+      // Caso a requisição falhe ou retorne vazia, carrega os dados de segurança (fallback)
       if (list == null) {
         list = extractProducts(LOCAL_FALLBACK);
       }
 
       if (cancelled) return;
-
+      // Se os dados forem válidos, atualiza o estado e finaliza o carregamento
       if (list && list.length > 0) {
         setProducts(list);
         setLoadState('idle');
@@ -68,7 +67,7 @@ export const VitrineProductsProvider: FC<{ children: ReactNode }> = ({
       }
       setLoadState('error');
     })();
-
+    // Limpeza de efeitos e cancelamento de requisições pendentes ao desmontar o componente
     return () => {
       cancelled = true;
       clearTimeout(slowTimer);
@@ -82,7 +81,7 @@ export const VitrineProductsProvider: FC<{ children: ReactNode }> = ({
     </VitrineProductsContext.Provider>
   );
 };
-
+// Hook personalizado para acessar os dados dos produtos de forma simplificada
 export function useVitrineProducts(): Ctx {
   const v = useContext(VitrineProductsContext);
   if (!v) {

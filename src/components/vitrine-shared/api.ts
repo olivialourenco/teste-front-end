@@ -1,16 +1,21 @@
 import localProductsJson from '../../data/products.json';
 import type { VitrineApiProduct, VitrineApiResponse } from './types';
 
+// Endereço da API e configurações de requisição
 export const VITRINE_PRODUCTS_URL =
   'https://app.econverse.com.br/teste-front-end/junior/tecnologia/lista-produtos/produtos.json';
 
+
+// Proxy utilizado para contornar bloqueios de CORS durante o desenvolvimento
 export const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';
 export const PROXIED_ECONVERSE_URL = `${CORS_PROXY}${VITRINE_PRODUCTS_URL}`;
 export const FETCH_TIMEOUT_MS = 12_000;
 
+// Dados locais importados para servir de segurança caso a API falhe
 export const LOCAL_FALLBACK: VitrineApiResponse =
   localProductsJson as VitrineApiResponse;
 
+// Função para validar se os dados recebidos da API estão no formato correto  
 export function extractProducts(data: unknown): VitrineApiProduct[] | null {
   if (!data || typeof data !== 'object') return null;
   const o = data as VitrineApiResponse;
@@ -20,6 +25,7 @@ export function extractProducts(data: unknown): VitrineApiProduct[] | null {
   return o.products;
 }
 
+// Formatação de moeda no padrão brasileiro (R$)
 export function formatBRLPrice(reais: number): string {
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',

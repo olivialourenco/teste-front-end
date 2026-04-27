@@ -1,6 +1,6 @@
 @use '../../styles/variables' as vars;
 
-// Modal no body (portal). Estilos base 769px; abaixo de 640 o conteúdo empilha.
+// Modal no body (portal); abaixo de 640px o conteúdo interno passa a coluna única
 $pop-gray: #3f3f40;
 $pop-muted: #9f9f9f;
 $pop-violet: #271c47;

@@ -1,6 +1,6 @@
 @use '../../styles/variables' as vars;
 
-// Dois cartões 634×350; o bloco base respeita o Figma. Em 700px quebramos coluna.
+// Dois cards lado a lado no desktop; abaixo de 700px empilhamos em coluna
 $apoio-radius: 20px;
 $apoio-yellow: #f7ca11;
 $apoio-cta-text: #271c47;
@@ -16,7 +16,7 @@ $apoio-cta-text: #271c47;
     box-sizing: border-box;
   }
 
-  // Figma: row, gap 13px, 1281×350 (dois 634×350)
+  // Linha com gap 13px entre os dois cards
   &__row {
     display: flex;
     flex-direction: row;
@@ -40,7 +40,7 @@ $apoio-cta-text: #271c47;
     box-sizing: border-box;
   }
 
-  // Imagem (01-.jpg / image 45 no projeto) com área ampliada como no Figma
+  // Imagem de fundo do card
   &__media {
     position: absolute;
     inset: 0;
@@ -50,7 +50,7 @@ $apoio-cta-text: #271c47;
     background-position: 60% 45%;
   }
 
-  // Rectangle 107: gradiente a partir de ~89px, cantos inferiores 20px
+  // Gradiente sobre a foto + cantos inferiores arredondados
   &__overlay {
     position: absolute;
     left: 0;
@@ -64,7 +64,7 @@ $apoio-cta-text: #271c47;
     pointer-events: none;
   }
 
-  // Textos: left ~44px; título 114, texto 182, CTA 262 (absolutos no frame)
+  // Conteúdo posicionado sobre a mídia (offsets do Figma)
   &__content {
     position: relative;
     z-index: 1;
@@ -73,7 +73,7 @@ $apoio-cta-text: #271c47;
     align-items: flex-start;
     height: 100%;
     box-sizing: border-box;
-    padding: 114px 2.75rem 2.5rem 2.75rem; // esquerda 44.18px
+    padding: 114px 2.75rem 2.5rem 2.75rem; // alinhamento ao frame (~44px à esquerda)
   }
 
   &__title {
@@ -98,7 +98,7 @@ $apoio-cta-text: #271c47;
     color: #fff;
   }
 
-  // Group 663: 144,69×48, raio 6, amarelo
+  // Botão CTA (amarelo, raio 6px)
   &__cta {
     display: inline-flex;
     align-items: center;

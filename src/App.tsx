@@ -1,4 +1,4 @@
-// Ordem = fluxo do layout Figma (header → conteúdo → rodapé)
+// Seções na mesma ordem do layout do Figma: header → conteúdo → rodapé
 import Header from './components/Header';
 import Banner from './components/Banner';
 import CategorySection from './components/CategorySection';

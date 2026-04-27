@@ -1,15 +1,15 @@
 @use '../../styles/variables' as vars;
 
-// Bloco 1440×390: posições absolutas do Figma. Só o bloco @media 900 desfaz o absoluto em telemóvel.
+// Banner hero (~390px): no desktop seguimos o frame do Figma com posicionamento absoluto; abaixo de 900px passamos para layout fluido.
 $banner-height: 390px;
 $figma-artboard-top: 144px;
 $abs-top-title: 222;
 $abs-top-sub: 340;
 $abs-top-btn: 429;
 
-$top-title: $abs-top-title - $figma-artboard-top; // 78px
-$top-sub: $abs-top-sub - $figma-artboard-top; // 196px
-$top-btn: $abs-top-btn - $figma-artboard-top; // 285px
+$top-title: $abs-top-title - $figma-artboard-top; // título: 78px abaixo do topo do artboard
+$top-sub: $abs-top-sub - $figma-artboard-top; // subtítulo
+$top-btn: $abs-top-btn - $figma-artboard-top; // CTA
 
 .banner {
   position: relative;
@@ -23,8 +23,7 @@ $top-btn: $abs-top-btn - $figma-artboard-top; // 285px
   background-position: center;
   overflow: hidden;
 
-  // Rectangle 108: no Figma 390×966 com rotate(90°); o preenchimento é linear-gradient 180° + opacity 0.8 + mix-blend normal (border-radius 0).
-  // Em tela cheia, o mesmo efeito é aplicado em toda a área (1440+), pois a rotação do frame não escala a largura do banner.
+  // Escurece a foto com gradiente + opacidade (mesma leitura visual do layout)
   &__overlay {
     position: absolute;
     inset: 0;
@@ -95,7 +94,7 @@ $top-btn: $abs-top-btn - $figma-artboard-top; // 285px
   }
 
   &__cta {
-    // Frame 23198: flex row, center, padding 7px 49px, gap 10
+    // Botão primário (padding e gap do Figma)
     position: absolute;
     left: 87px;
     top: $top-btn;
@@ -131,7 +130,7 @@ $top-btn: $abs-top-btn - $figma-artboard-top; // 285px
   }
 }
 
-// Layout fluido: remove posicionamento absoluto do Figma
+// Mobile/tablet: removemos o absoluto e deixamos o conteúdo fluir
 @media (max-width: 900px) {
   .banner {
     height: auto;

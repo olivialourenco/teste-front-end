@@ -10,9 +10,7 @@ import type { VitrineLoadState } from './types';
 
 type RowListCss = CSSProperties & { '--vitrine-n'?: number };
 
-/**
- * 4 itens visíveis no desktop, track com `translate3d` em px e lista com largura (n/4)·100%.
- */
+/** Carrossel: até quatro cards visíveis no desktop, deslize em px e largura da lista ajustada ao total de itens. */
 export function useVitrineCarousel(productsLength: number, loadState: VitrineLoadState) {
   const [slideIndex, setSlideIndex] = useState(0);
   const [viewportW, setViewportW] = useState(0);

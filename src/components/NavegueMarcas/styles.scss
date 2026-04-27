@@ -6,7 +6,7 @@ $circle: 211px;
 $logo-max-w: 117px;
 $logo-max-h: 35px;
 
-// 5 círculos 211px; 1200 / 600 reduzem gap e, no telemóvel, tamanho do círculo
+// Círculos de marca (~211px); ajustamos gap e tamanho em breakpoints menores
 .navegue-marcas {
   width: 100%;
   padding: 2.5rem 0 2.5rem;
@@ -23,7 +23,7 @@ $logo-max-h: 35px;
     margin: 0 auto 2rem;
     width: 100%;
     max-width: 1250px;
-    min-height: 45px; // Figma: título 1250×45
+    min-height: 45px; // altura mínima do título no layout
     font-family: vars.$font-main;
     font-style: normal;
     font-weight: 700;
@@ -95,7 +95,7 @@ $logo-max-h: 35px;
   }
 }
 
-// Ecrã estreito: título e círculos ligeiramente menores; desktop não mexe
+// Em telas estreitas reduzimos título e círculos; desktop inalterado
 @media (max-width: 600px) {
   .navegue-marcas {
     &__title {

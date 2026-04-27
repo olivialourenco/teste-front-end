@@ -6,7 +6,7 @@ $color-blue-active: #3019b2;
 $color-text-dark: #3f3f40;
 $font-main: 'Poppins', sans-serif;
 
-// Só usados em @media — acima disto o layout segue o Figma (1440 / 1280)
+// Breakpoints usados nos @media; em telas largas segue o frame do Figma (1440/1280)
 $bp-laptop: 1024px;
 $bp-tablet: 900px;
 $bp-mobile: 640px;

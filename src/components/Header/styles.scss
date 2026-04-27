@@ -1,6 +1,6 @@
 @use '../../styles/variables' as vars;
 
-// Cabeçalho em 3 faixas (topo institucional, busca+logo, menu). O bloco base replica o Figma 1440.
+// Header em três faixas: benefícios, busca+logo, menu — largura full no frame de 1440px
 .header {
   width: 100%;
   background-color: vars.$color-white;
@@ -15,7 +15,7 @@
     justify-content: center;
 
     .container-top {
-      /* Frame 2364 */
+      // Largura fixa da faixa de benefícios no desktop
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -48,7 +48,7 @@
     }
   }
 
-  // 2. HEADER PRINCIPAL (Centralizado com a Logo)
+  // Bloco central: logo, busca e ações
   &__main {
     padding: 15px 0;
     
@@ -93,9 +93,8 @@
     }
   }
 
-  // 3. NAVEGAÇÃO (Rectangle 1)
+  // Menu de categorias com sombra
   &__nav {
-    /* Rectangle 1 */
     width: 100%;
     background: #FFFFFF;
     box-shadow: 0px 8px 16px rgba(57, 48, 19, 0.12);
@@ -128,7 +127,7 @@
   }
 }
 
-// A partir daqui: empilhamento, larguras percentuais e grelha de links — sem mudar o que está acima em ecrãs largos
+// Abaixo: header responsivo (empilhamos faixas e ajustamos o menu; desktop acima fica como está)
 @media (max-width: vars.$bp-laptop) {
   .header {
     &__top-bar .container-top {

@@ -22,7 +22,7 @@ const ProductPopup: FC<ProductPopupProps> = ({ isOpen, onClose }) => {
     setQty((q) => Math.min(99, q + 1));
   }, []);
 
-  // Fecha com Escape; listener só enquanto o modal está aberto
+  // Escape fecha o modal, o listener fica ativo só com o popup aberto
   useEffect(() => {
     if (!isOpen) return;
     const onKey = (e: KeyboardEvent) => {
@@ -32,7 +32,7 @@ const ProductPopup: FC<ProductPopupProps> = ({ isOpen, onClose }) => {
     return () => window.removeEventListener('keydown', onKey);
   }, [isOpen, onClose]);
 
-  // Evita scroll do site por baixo do overlay
+  // Trava o scroll da página enquanto o overlay está ativo
   useEffect(() => {
     if (!isOpen) return;
     const prev = document.body.style.overflow;
@@ -42,14 +42,14 @@ const ProductPopup: FC<ProductPopupProps> = ({ isOpen, onClose }) => {
     };
   }, [isOpen]);
 
-  // Sempre reabre com quantidade 1
+  // Toda abertura volta a quantidade 1
   useEffect(() => {
     if (!isOpen) setQty(1);
   }, [isOpen]);
 
   if (!isOpen) return null;
 
-  // `body` evita `z-index` com o stacking context do banner/hero
+  // Portal no document.body para o modal ficar acima do hero/banner
   return createPortal(
     <div className="product-popup-root">
       <div

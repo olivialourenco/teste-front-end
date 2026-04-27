@@ -1,6 +1,6 @@
 @use '../../styles/variables' as vars;
 
-// Sete categorias em fila (Figma); em ecrã muito estreito passa a 2 colunas para não esmagar o SVG
+// Sete categorias em linha; em telas muito estreitas vira duas colunas para o ícone respirar
 .category-section {
   width: 100%;
   padding: 2rem 0 2.5rem;
@@ -24,7 +24,7 @@
     color: vars.$color-text-dark;
   }
 
-  // Todos os itens na mesma linha, sem rolagem: largura do container + gap + escala do SVG
+  // Fila fixa sem scroll horizontal: cabe no container com gap e escala do SVG
   &__row {
     display: flex;
     flex-direction: row;
@@ -38,7 +38,7 @@
     min-height: 171px;
     box-sizing: border-box;
     overflow: visible;
-    // Reduz o espaçamento em telas menores; no máximo 42px (Figma)
+    // Gap fluido; teto de 42px como no layout
     gap: clamp(4px, 1.4vw, 42px);
   }
 

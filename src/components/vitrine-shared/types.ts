@@ -1,5 +1,4 @@
-/**
- * O campo `price` no JSON é o valor inteiro em reais (ex.: 15_000 → R$ 15.000,00).
+/** * Interface que representa a estrutura de um produto vindo da API 
  */
 export type VitrineApiProduct = {
   productName: string;
@@ -13,6 +12,8 @@ export type VitrineApiResponse = {
   products: VitrineApiProduct[];
 };
 
+// Identificadores para os blocos de vitrine da página
 export type VitrineBlock = 'vitrine' | 'vitrine2' | 'vitrine3';
 
+// Estados possíveis para o controle de carregamento dos dados
 export type VitrineLoadState = 'idle' | 'loading' | 'error';

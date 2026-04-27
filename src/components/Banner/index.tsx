@@ -3,7 +3,7 @@ import './styles.scss';
 import bannerImage from '../../assets/banner/Rectangle 250.png';
 import ProductPopup from '../ProductPopup';
 
-// CTA "Ver produto" só controla a abertura do modal (estado em memória, sem rota)
+// "Ver produto" só abre o ProductPopup, sem uso de rota
 const Banner: FC = () => {
   const [productPopupOpen, setProductPopupOpen] = useState(false);
 

@@ -1,6 +1,6 @@
 @use '../../styles/variables' as vars;
 
-// Abas + vitrine: no desktop largo, o track desliza e mostra 4 itens (layout Figma); preços vêm do JSON em reais inteiros.
+// Vitrine com abas e carrossel; no desktop exibimos quatro cards por linha (preços alimentados pelo JSON).
 $vitrine-blue: #3442b5;
 $vitrine-line: #dedede;
 $vitrine-border-tab: #bdbdbd;
@@ -54,7 +54,7 @@ $vitrine-strike: #808080;
     color: $vitrine-blue;
   }
 
-  // "Ver todos" (link 15px / 700 / #3F3F40)
+  // Link "Ver todos" centralizado abaixo do título
   &__link-all {
     display: block;
     width: max-content;
@@ -75,7 +75,7 @@ $vitrine-strike: #808080;
     }
   }
 
-  // Fila de abas (Figma: partilham bordas; em ecrã muito estreito ver regra abaixo no @media 768)
+  // Abas em fila; em telas estreitas viram rolagem horizontal (regra no @media 768)
   &__tabs {
     display: flex;
     flex-direction: row;
@@ -124,7 +124,7 @@ $vitrine-strike: #808080;
     }
   }
 
-  // Setas nas laterais (Figma: space-between), alinhadas ao meio vertical da vitrine
+  // Setas laterais alinhadas ao centro vertical da faixa de produtos
   &__slider {
     display: flex;
     flex-direction: row;
@@ -137,7 +137,7 @@ $vitrine-strike: #808080;
     box-sizing: border-box;
   }
 
-  // Viewport do carrossel: 100% da coluna central, overflow escondido; o trilho desliza por `transform` (não a lista em si)
+  // Recorte do carrossel: largura total, overflow hidden; o movimento fica no trilho abaixo
   &__row-wrap {
     display: flex;
     flex: 1 1 auto;
@@ -148,7 +148,7 @@ $vitrine-strike: #808080;
     overflow: hidden;
   }
 
-  // Trilho: largura = wrapper; a animação aplica-se aqui (0.5s ease)
+  // Trilho que recebe o transform (transição 0,5s)
   &__row-track {
     width: 100%;
     min-width: 0;
@@ -165,7 +165,7 @@ $vitrine-strike: #808080;
     gap: 18px;
   }
 
-  // Pista = (n/4)·100% do trilho: abre exactamente o espaço de n/4 “páginas” de 4 itens; cada .vitrine__card fica 1/4 do wrapper (quatro visíveis)
+  // Com carrossel: lista em flex; a largura total acompanha n/4 “páginas” de quatro itens
   & &__row[data-carousel='on'] {
     display: flex;
     flex-direction: row;
@@ -173,14 +173,14 @@ $vitrine-strike: #808080;
     align-items: stretch;
   }
 
-  // Largura fixa por coluna: com a pista a (n/4)·100%, cada li é 1/n disto (= 1/4 do .vitrine__row-wrap); fórmula inclui o gap 18px entre n itens
+  // Cada item: base flex com --vitrine-n vindo do JS; o calc desconta o gap de 18px entre os itens
   & &__row[data-carousel='on'] .vitrine__card {
     flex: 0 0
       calc((100% - 18px * (var(--vitrine-n) - 1)) / var(--vitrine-n, 1));
     min-width: 0;
   }
 
-  // Sem carrossel (ou ≤4 produtos, ou ecrã estreito): grelha reaproveitada
+  // Sem carrossel: grade (poucos produtos ou viewport estreita)
   & &__row[data-carousel='off'] {
     display: grid;
     width: 100%;
@@ -192,7 +192,7 @@ $vitrine-strike: #808080;
     max-width: 100%;
   }
 
-  // Conteúdo semântico do item da lista (article > button)
+  // Item da lista: article envolvendo o botão
   &__card-article {
     margin: 0;
     padding: 0;
@@ -202,7 +202,7 @@ $vitrine-strike: #808080;
     min-width: 0;
   }
 
-  // Superfície única (button) abre o modal: evita botão dentro de botão
+  // Superfície clicável: um botão evita aninhar interativos
   &__card-surface {
     display: flex;
     flex-direction: column;
@@ -249,7 +249,7 @@ $vitrine-strike: #808080;
     object-fit: contain;
   }
 
-  // Nome do produto: destaque (h3)
+  // Título do produto (h3)
   &__card-title {
     margin: 0 0 0.35rem;
     font-family: vars.$font-main;
@@ -260,7 +260,7 @@ $vitrine-strike: #808080;
     color: vars.$color-text-dark;
   }
 
-  // Descrição curta: hierarquia secundária, 2 linhas com reticências
+  // Descrição curta, cortada em duas linhas
   &__card-desc {
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -287,7 +287,7 @@ $vitrine-strike: #808080;
     color: $vitrine-strike;
   }
 
-  // Preço no cartão: logo abaixo da descrição, em destaque (reais inteiros; sem /100)
+  // Preço principal (valor já em reais, formatado no TS)
   &__card-price {
     margin: 0 0 0.4rem;
     font-family: vars.$font-main;
@@ -344,7 +344,7 @@ $vitrine-strike: #808080;
     filter: brightness(1.05);
   }
 
-  // Group 2411 / 2412 — 32px, laterais da vitrine (Figma: space-between no eixo horizontal)
+  // Setas 32px nas laterais
   &__arrow {
     display: flex;
     align-items: center;
@@ -434,7 +434,7 @@ $vitrine-strike: #808080;
   }
 }
 
-// Permite percorrer as abas com swipe no telemóvel (uma linha rolável) sem partir o título nem o "Ver todos"
+// Abas com rolagem horizontal no mobile, sem deslocar o título
 @media (max-width: 768px) {
   .vitrine {
     &__tabs {

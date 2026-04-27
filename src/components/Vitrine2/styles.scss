@@ -1,6 +1,6 @@
 @use '../../styles/variables' as vars;
 
-// Alinhada à Vitrine 1: carrossel 4-up, API + card (sem fila de abas)
+// Mesma lógica da vitrine principal: carrossel e cards da API, sem fila de abas
 $v2-blue: #3442b5;
 $v2-line: #dedede;
 
@@ -17,7 +17,7 @@ $v2-line: #dedede;
   }
 
   &__intro {
-    margin-bottom: 1.5rem; // título + link → grelha (Figma: sem fila de tags)
+    margin-bottom: 1.5rem; // título e link "Ver todos" (sem abas nesta seção)
   }
 
   &__heading {

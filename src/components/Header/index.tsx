@@ -1,7 +1,6 @@
 import { type FC } from 'react';
 import './styles.scss';
 import ShieldCheck from '../../assets/header/ShieldCheck.svg';
-// Protótipo reutiliza o mesmo asset em três itens; troque o ficheiro quando houver truck/card dedicados
 import Truck from '../../assets/header/ShieldCheck.svg';
 import CreditCard from '../../assets/header/ShieldCheck.svg';
 import MagnifyingGlass from '../../assets/header/MagnifyingGlass.svg';
