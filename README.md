@@ -1,4 +1,4 @@
-# ----- Teste Front-End Econverse
+# Teste Front-End Econverse
 
 Este projeto é uma Landing Page desenvolvida para o processo seletivo da Econverse. O objetivo foi criar uma interface fiel ao layout proposto, utilizando React, TypeScript e Sass, focando em organização e fidelidade visual.
 
