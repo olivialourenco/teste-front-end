@@ -1,67 +1,49 @@
-# Landing Page Econverse — Teste Front-end
+# ----- Teste Front-End Econverse
 
-Landing page da Econverse construída com **React**, **TypeScript**, **Vite** e **Sass**. O foco foi entregar uma home fiel ao Figma, com vitrines dinâmicas, bom desempenho e código fácil de navegar — sem atalhos com libs de UI prontas.
+Este projeto é uma Landing Page desenvolvida para o processo seletivo da Econverse. O objetivo foi criar uma interface fiel ao layout proposto, utilizando React, TypeScript e Sass, focando em organização e fidelidade visual.
 
----
+## Como rodar o projeto
 
-## 🚀 Como executar
+Para visualizar o projeto na sua máquina, siga os passos abaixo:
 
-Na raiz do projeto:
-
-```bash
+### Instale as dependências:
 npm install
+
+### Inicie o servidor de desenvolvimento:
 npm run dev
-```
 
-O Vite sobe o servidor local (geralmente em `http://localhost:5173`). Para validar o bundle de produção:
+O projeto estará disponível no endereço indicado no seu terminal (geralmente http://localhost:5173).
 
-```bash
-npm run build
-```
+## Tecnologias que utilizei
 
-**Requisito:** Node.js 18+ (LTS recomendado).
+**React e TypeScript:** Para criar a estrutura da página e garantir que os dados dos produtos sejam manipulados sem erros.
 
----
+**Sass:** Utilizado para toda a estilização, permitindo o uso de variáveis para cores e tamanhos, mantendo o código limpo.
 
-## 🛠 Tecnologias utilizadas
+**Context API:** Usei para que a lista de produtos seja carregada apenas uma vez e compartilhada entre todas as vitrines do site.
 
-| Stack | Uso no projeto |
-|--------|----------------|
-| **React** | Componentes da página e composição da UI |
-| **TypeScript** | Tipagem dos produtos, estados e contratos da API |
-| **Sass** | Pré-processador pedido no desafio — estilos com variáveis (cores, breakpoints) alinhadas ao layout |
-| **Vite** | Dev server rápido, build enxuto |
-| **Context API** | `VitrineProductsProvider` para compartilhar a lista de produtos na home com uma única busca |
+**Aviso importante:** Não utilizei nenhuma biblioteca de componentes pronta (como Bootstrap ou Tailwind). Todo o layout e as interações foram criados do zero com CSS e React, respeitando as regras do teste.
 
-**Importante:** não usei **Material, Chakra, Bootstrap, Tailwind** nem outra biblioteca de componentes. Tudo que você vê em layout e interação foi feito com HTML/CSS/Sass e React — do jeito que o teste pediu.
+## Decisões técnicas e soluções
 
----
+### Consumo da API e o problema do CORS
 
-## 💡 Soluções e decisões técnicas
+Durante o desenvolvimento, notei que o navegador bloqueia o acesso direto aos dados da API da Econverse por uma segurança chamada CORS. Para resolver isso e conseguir mostrar os produtos reais no teste, usei um "proxy", que funciona como um intermediário para buscar os dados.
 
-### Consumo de API e CORS
+Como esses intermediários gratuitos podem falhar, criei um plano de segurança: se a internet ou o link falharem, o site carrega automaticamente um arquivo local (products.json) com as mesmas informações. Assim, a vitrine nunca fica vazia.
 
-A API oficial da Econverse não libera `localhost` do jeito que precisamos para testar no navegador: entra **CORS** e o `fetch` direto quebra, mesmo com a API respondendo 200.
+### Formatação de Preços
 
-Para ainda assim conseguir testar a URL real no dia a dia, o `fetch` passa por um **proxy** público na frente do endpoint. Funciona para demo e entrega, com a ressalva de que proxy gratuito pode oscilar (rede, limite, instabilidade).
+Identifiquei que os valores no arquivo de dados representam o preço cheio em reais (por exemplo, 15000 equivale a R$ 15.000,00). Por isso, configurei o código para exibir o valor direto no padrão brasileiro, sem fazer divisões, garantindo que os preços dos iPhones e dispositivos fiquem corretos.
 
-O que não dá é depender só disso. Por isso entrou um **fallback local** (`src/data/products.json` com o mesmo formato da API): se o proxy cair, der timeout, ou a resposta vier inválida, a aplicação hidrata a vitrine com esse mock. A vitrine **não fica vazia** no meio de uma apresentação.
+### Vitrines e Carrossel
 
-### Regra de negócio: preços
+O projeto possui três vitrines. Elas usam a mesma base de código para evitar repetição, mas cada uma tem seu próprio estilo visual. O carrossel (deslizar os produtos) foi feito manualmente com lógica de programação e CSS, sem o uso de plugins prontos, permitindo o controle total sobre a exibição de 4 itens por vez no computador.
 
-Os valores vêm do JSON como **números inteiros em reais** (ex.: `15000` = R$ 15.000,00). A formatação usa `Intl.NumberFormat` em pt-BR e **não divide por 100** — evita tratar o campo como centavo e mantém a leitura alinhada a preços de tecnologia no enunciado.
+## Diferenciais do projeto
 
-### Componentização das vitrines
+**Organização e Semântica:** Usei as tags corretas do HTML para que o site seja bem entendido por buscadores e leitores de tela, melhorando o SEO e a acessibilidade.
 
-As três vitrines (Vitrine, Vitrine2, Vitrine3) compartilham a mesma **base** — tipos, fetch + fallback, `ProductCard`, `ProductSlider`, modal — mas cada bloco tem **seu próprio Sass** e classes BEM, preservando a identidade visual de cada seção no Figma sem copy-paste descontrolado de lógica.
+**Fidelidade ao Design:** Foquei em seguir cada detalhe do Figma, como fontes, cores e espaçamentos.
 
----
-
-## ✨ Diferenciais implementados
-
-- **HTML5 semântico** — `section`, listas de produtos em `ul`/`li`, títulos com `h2`/`h3`, `article` no card, modal com `role="dialog"`. Ajuda acessibilidade e SEO sem complicar o bundle.
-- **Layout alinhado ao Figma** — espaçamentos, tipografia e componentes (incluindo setas e vitrines) pensados no pixel.
-- **Modal reativo e carrossel** — abertura por produto, navegação por setas, 4 itens no viewport no desktop — **sem Swiper, sem Embla, sem nada disso**; só CSS + estado em React.
-- **Performance e organização** — uma carga de produtos via Context, carrossel com `transform` e resize observado, Sass modular por seção, zero peso de framework de UI.
-
-Se algo não bater com o teu ambiente, abre uma issue ou chama no teste — boa leitura do repo.
+**Modal de Produto:** Ao clicar em um produto, um balão de detalhes (modal) abre com as informações específicas daquele item, funcionando perfeitamente em todas as vitrines.
