@@ -1,16 +1,25 @@
 import { useCallback, useEffect, useId, useState, type FC } from 'react';
 import { createPortal } from 'react-dom';
 import './styles.scss';
+import { formatBRLPrice } from '../vitrine-shared/api';
+import type { VitrineApiProduct } from '../vitrine-shared/types';
 import popupImage from '../../assets/popup/Grupo de máscara 20 1.png';
+
+const STATIC_DESCRIPTION =
+  'Many desktop publishing packages and web page editors now many desktop publishing';
 
 export type ProductPopupProps = {
   isOpen: boolean;
   onClose: () => void;
+  /** Vitrines passam o item da API; sem isso mantemos o placeholder do layout (ex.: banner). */
+  product?: VitrineApiProduct | null;
 };
 
-const DESCRIPTION =
-  'Many desktop publishing packages and web page editors now many desktop publishing';
-const ProductPopup: FC<ProductPopupProps> = ({ isOpen, onClose }) => {
+const ProductPopup: FC<ProductPopupProps> = ({
+  isOpen,
+  onClose,
+  product,
+}) => {
   const [qty, setQty] = useState(1);
   const headingId = useId();
 
@@ -22,7 +31,7 @@ const ProductPopup: FC<ProductPopupProps> = ({ isOpen, onClose }) => {
     setQty((q) => Math.min(99, q + 1));
   }, []);
 
-  // Escape fecha o modal, o listener fica ativo só com o popup aberto
+  // Escape fecha o modal; o listener fica ativo só com o popup aberto
   useEffect(() => {
     if (!isOpen) return;
     const onKey = (e: KeyboardEvent) => {
@@ -46,6 +55,15 @@ const ProductPopup: FC<ProductPopupProps> = ({ isOpen, onClose }) => {
   useEffect(() => {
     if (!isOpen) setQty(1);
   }, [isOpen]);
+
+  const displayName = product?.productName ?? 'LOREM IPSUM DOLOR SIT AMET';
+  const displayPrice =
+    product != null
+      ? formatBRLPrice(product.price)
+      : 'R$ 1.499,90';
+  const imageSrc = product?.photo ?? popupImage;
+  const descriptionText = product?.descriptionShort ?? STATIC_DESCRIPTION;
+  const imageAlt = product?.productName ?? '';
 
   if (!isOpen) return null;
 
@@ -75,8 +93,8 @@ const ProductPopup: FC<ProductPopupProps> = ({ isOpen, onClose }) => {
         <div className="product-popup__body">
           <div className="product-popup__media">
             <img
-              src={popupImage}
-              alt=""
+              src={imageSrc}
+              alt={imageAlt}
               className="product-popup__image"
               loading="eager"
               decoding="async"
@@ -86,12 +104,12 @@ const ProductPopup: FC<ProductPopupProps> = ({ isOpen, onClose }) => {
             <div className="product-popup__stack">
               <div className="product-popup__titles">
                 <p className="product-popup__name" id={headingId}>
-                  LOREM IPSUM DOLOR SIT AMET
+                  {displayName}
                 </p>
-                <p className="product-popup__price">R$ 1.499,90</p>
+                <p className="product-popup__price">{displayPrice}</p>
               </div>
               <div className="product-popup__blurb">
-                <p className="product-popup__description">{DESCRIPTION}</p>
+                <p className="product-popup__description">{descriptionText}</p>
                 <a className="product-popup__more" href="#">
                   Veja mais detalhes do produto &gt;
                 </a>

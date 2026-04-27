@@ -1,9 +1,9 @@
 import { useCallback, useState, type FC } from 'react';
 import './styles.scss';
+import ProductPopup from '../ProductPopup';
 import {
   useVitrineProducts,
   ProductSlider,
-  VitrineProductModal,
   type VitrineApiProduct,
 } from '../vitrine-shared';
 
@@ -38,7 +38,11 @@ const Vitrine3: FC = () => {
         />
       </div>
 
-      <VitrineProductModal product={selectedProduct} onClose={closeModal} />
+      <ProductPopup
+        isOpen={selectedProduct !== null}
+        onClose={closeModal}
+        product={selectedProduct}
+      />
     </section>
   );
 };

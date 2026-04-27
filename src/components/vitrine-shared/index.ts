@@ -13,4 +13,3 @@ export {
 export { VitrineProductsProvider, useVitrineProducts } from './ProductsContext';
 export { default as ProductCard } from './ProductCard';
 export { default as ProductSlider } from './ProductSlider';
-export { default as VitrineProductModal } from './VitrineProductModal';
