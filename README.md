@@ -1,64 +1,67 @@
-# Teste Front-end — Econverse (Home)
+# Landing Page Econverse — Teste Front-end
 
-Aplicação React (TypeScript + Vite) com layout alinhado ao Figma: header, vitrines de produtos, banners e rodapé.
+Landing page da Econverse construída com **React**, **TypeScript**, **Vite** e **Sass**. O foco foi entregar uma home fiel ao Figma, com vitrines dinâmicas, bom desempenho e código fácil de navegar — sem atalhos com libs de UI prontas.
 
-## Requisitos
+---
 
-- [Node.js](https://nodejs.org/) 18+ (recomendado: LTS)
-- npm (vem com o Node)
+## 🚀 Como executar
 
-## Como rodar o projeto
-
-Na raiz do repositório:
+Na raiz do projeto:
 
 ```bash
 npm install
-```
-
-Subir o servidor de desenvolvimento (HMR do Vite):
-
-```bash
 npm run dev
 ```
 
-Abra o endereço exibido no terminal (em geral `http://localhost:5173`).
-
-Build de produção (checagem TypeScript + bundle):
+O Vite sobe o servidor local (geralmente em `http://localhost:5173`). Para validar o bundle de produção:
 
 ```bash
 npm run build
 ```
 
-Pré-visualização do build estático:
+**Requisito:** Node.js 18+ (LTS recomendado).
 
-```bash
-npm run preview
-```
+---
 
-## Dados da vitrine: API, CORS, proxy e fallback
+## 🛠 Tecnologias utilizadas
 
-### CORS e uso do proxy
+| Stack | Uso no projeto |
+|--------|----------------|
+| **React** | Componentes da página e composição da UI |
+| **TypeScript** | Tipagem dos produtos, estados e contratos da API |
+| **Sass** | Pré-processador pedido no desafio — estilos com variáveis (cores, breakpoints) alinhadas ao layout |
+| **Vite** | Dev server rápido, build enxuto |
+| **Context API** | `VitrineProductsProvider` para compartilhar a lista de produtos na home com uma única busca |
 
-A API oficial da Econverse expõe o JSON em outro *origin* (`app.econverse.com.br`). Quando a página do projeto roda noutro domínio (ex.: `localhost` ou o deploy de teste), o navegador aplica a política de **CORS (Cross-Origin Resource Sharing)** e, em muitos casos, **bloqueia** a resposta `fetch` direto para a URL pública, mesmo que a API responda 200.
+**Importante:** não usei **Material, Chakra, Bootstrap, Tailwind** nem outra biblioteca de componentes. Tudo que você vê em layout e interação foi feito com HTML/CSS/Sass e React — do jeito que o teste pediu.
 
-Para contornar isso em **ambiente de demonstração/aval**, o código usa um **proxy HTTP público** (prefixo na URL do `fetch`) encadeado à URL da lista de produtos. O fluxo fica, em síntese:
+---
 
-1. O cliente pede a URL: `https://<proxy>/https://app.econverse.com.br/.../produtos.json`
-2. O serviço de proxy encaminha o pedido e devolve o corpo ao nosso *front* no mesmo eixo de requisições permitido.
+## 💡 Soluções e decisões técnicas
 
-**Nota:** serviços de proxy gratuitos podem exigir registo/whitelist ou sofrer instabilidade. Não os use como padrão em produção: em projectos reais, o CORS deveria ser resolvido no **servidor** (cabeçalhos `Access-Control-*` ou o próprio *backend* a expor a API).
+### Consumo de API e CORS
 
-### Fallback local (`products.json`)
+A API oficial da Econverse não libera `localhost` do jeito que precisamos para testar no navegador: entra **CORS** e o `fetch` direto quebra, mesmo com a API respondendo 200.
 
-Se o pedido com proxy **falhar** (CORS, rede, timeout, proxy indisponível, resposta inválida ou corpo inútil, etc.), a aplicação cai de volta para o ficheiro **`src/data/products.json`**, com a mesma forma `{ success, products }`, para as vitrines continuarem a exibir conteúdo. O fallback está centralizado no `VitrineProductsProvider` (uma carga partilhada pela home).
+Para ainda assim conseguir testar a URL real no dia a dia, o `fetch` passa por um **proxy** público na frente do endpoint. Funciona para demo e entrega, com a ressalva de que proxy gratuito pode oscilar (rede, limite, instabilidade).
 
-## Preço dos produtos (JSON)
+O que não dá é depender só disso. Por isso entrou um **fallback local** (`src/data/products.json` com o mesmo formato da API): se o proxy cair, der timeout, ou a resposta vier inválida, a aplicação hidrata a vitrine com esse mock. A vitrine **não fica vazia** no meio de uma apresentação.
 
-O campo `price` no JSON representa o valor **inteiro em reais** (ex.: `15000` → `R$ 15.000,00`). A formatação utiliza `Intl.NumberFormat` em `pt-BR` e **não** divide o número por 100 (não tratar como “centavos”).
+### Regra de negócio: preços
 
-## Estrutura relevante (vitrine)
+Os valores vêm do JSON como **números inteiros em reais** (ex.: `15000` = R$ 15.000,00). A formatação usa `Intl.NumberFormat` em pt-BR e **não divide por 100** — evita tratar o campo como centavo e mantém a leitura alinhada a preços de tecnologia no enunciado.
 
-- `src/components/vitrine-shared/` — tipos, API, contexto de produtos, `ProductCard`, `ProductSlider`, `VitrineProductModal`
-- `src/components/Vitrine/`, `Vitrine2/`, `Vitrine3/` — secções e estilos (SASS) por bloco, sem UI kits externos
+### Componentização das vitrines
 
-Estilos globais e *tokens* de layout vivem em `src/styles/`; componentes usam SASS (variáveis) e BEM, sem Tailwind/Bootstrap.
+As três vitrines (Vitrine, Vitrine2, Vitrine3) compartilham a mesma **base** — tipos, fetch + fallback, `ProductCard`, `ProductSlider`, modal — mas cada bloco tem **seu próprio Sass** e classes BEM, preservando a identidade visual de cada seção no Figma sem copy-paste descontrolado de lógica.
+
+---
+
+## ✨ Diferenciais implementados
+
+- **HTML5 semântico** — `section`, listas de produtos em `ul`/`li`, títulos com `h2`/`h3`, `article` no card, modal com `role="dialog"`. Ajuda acessibilidade e SEO sem complicar o bundle.
+- **Layout alinhado ao Figma** — espaçamentos, tipografia e componentes (incluindo setas e vitrines) pensados no pixel.
+- **Modal reativo e carrossel** — abertura por produto, navegação por setas, 4 itens no viewport no desktop — **sem Swiper, sem Embla, sem nada disso**; só CSS + estado em React.
+- **Performance e organização** — uma carga de produtos via Context, carrossel com `transform` e resize observado, Sass modular por seção, zero peso de framework de UI.
+
+Se algo não bater com o teu ambiente, abre uma issue ou chama no teste — boa leitura do repo.
